@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# This is a plugin for the site 'nowfilms.ru'
+# This is a plugin for the site 'nowfilms.ru / kinokong.net'
 # It was written by coffee
 #
 # Simple and performant plugin to look films etc... It was tested on Raspberry Pi 2 + Openelec + Kodi 14.1
@@ -50,6 +50,7 @@ def build_url(query):
 
 mode = args.get('mode', None)
 
+
 # Gets film informations
 #
 # Returns array with following informations:
@@ -76,7 +77,10 @@ def getfilminformations(url):
         for (url, secondtitle) in urlstofilm:
             if title == secondtitle:
                 tmp = []
-                tmp.append('http://nowfilms.ru'+imageurl)
+                if imageurl.find("http://") != -1:
+                    tmp.append(imageurl)
+                else:
+                    tmp.append("http://kinokong.net"+imageurl)
                 tmp.append(title)
                 tmp.append(url)
                 retarr.append(tmp)
@@ -111,13 +115,15 @@ def getfilminformationssearch(url):
         for (url, secondtitle) in urlstofilm:
             if title == secondtitle:
                 tmp = []
-                tmp.append('http://nowfilms.ru'+imageurl)
+                if imageurl.find("http://") != -1:
+                    tmp.append(imageurl)
+                else:
+                    tmp.append("http://kinokong.net"+imageurl)
                 tmp.append(title)
                 tmp.append(url)
                 retarr.append(tmp)
 
     return retarr
-
 
 
 # Gets url to stream
@@ -196,7 +202,7 @@ if mode is None:
 elif mode[0] == 'folder':
     category = args['foldername'][0]
     page = args['page'][0]
-    categoryurl = 'http://nowfilms.ru/' + category + '/page/' + str(page) + '/'
+    categoryurl = 'http://kinokong.net/' + category + '/page/' + str(page) + '/'
 
     # Next page
     nextpage = int(page) + 1
@@ -211,6 +217,7 @@ elif mode[0] == 'folder':
         li = xbmcgui.ListItem(element[1].decode('windows-1251'), iconImage=element[0])
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
     xbmcplugin.endOfDirectory(addon_handle)
+    xbmc.executebuiltin('Container.SetViewMode(500)')
 
 elif mode[0] == 'item':
     filmtitle = args['filmtitle'][0].decode('windows-1251')
@@ -240,7 +247,7 @@ elif mode[0] == 'search':
         searchtext = keyboard.getText()
 
     searchtext = searchtext.decode('utf-8').encode('windows-1251')
-    url = 'http://nowfilms.ru/?do=search&subaction=search&story=' + searchtext + '&x=0&y=0'
+    url = 'http://kinokong.net/?do=search&subaction=search&story=' + searchtext + '&x=0&y=0'
     filminformations = getfilminformationssearch(url)
 
     for (element) in filminformations:
