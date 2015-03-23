@@ -211,6 +211,7 @@ elif mode[0] == 'folder':
         li = xbmcgui.ListItem(element[1].decode('windows-1251'), iconImage=element[0])
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
     xbmcplugin.endOfDirectory(addon_handle)
+    xbmc.executebuiltin('Container.SetViewMode(508)')
 
 elif mode[0] == 'item':
     filmtitle = args['filmtitle'][0].decode('windows-1251')
