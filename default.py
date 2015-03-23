@@ -76,7 +76,7 @@ def getfilminformations(url):
         for (url, secondtitle) in urlstofilm:
             if title == secondtitle:
                 tmp = []
-                tmp.append('http://nowfilms.ru'+imageurl)
+                tmp.append(imageurl)
                 tmp.append(title)
                 tmp.append(url)
                 retarr.append(tmp)
