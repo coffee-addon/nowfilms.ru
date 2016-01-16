@@ -58,34 +58,41 @@ mode = args.get('mode', None)
 # [0] - Imageurl
 # [1] - Title
 # [2] - Url to film
+# [3] - Quality
+# [4] - Positive
+# [5] - Positive
 def getfilminformations(url):
     # Open url
-    response = urllib2.urlopen(url)
+    response = urllib.urlopen(url)
     html = response.read()
     # First regex to filter image and title
-    # p = re.compile(ur'<span class="new_movie4 oops" style="background: url\((.*)\)\ no-repeat.*alt="(.*)"')
-    p = re.compile(ur'<span class="new_movie4.*".*<img src="(.*)" alt="(.*)"')
-    imagesandtitles = re.findall(p, html)
-    # Second regex to filter url to film
-    p = re.compile(ur'<span class="new_movie[6|8]"><a href="(.*)">(.*)<\/a>\s{1,4}<\/span>')
-    urlstofilm = re.findall(p, html)
-    # Remove duplicates
-    urlstofilm = list(set(urlstofilm))
+    # Broke into two strings because Python sucks!
+    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
+    teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
+    teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
+    p = re.compile(teststring)
+    UrlsImagesTitles = re.findall(p, html)
+
     # Create an array and write all found elements to it
     retarr = []
-    for (imageurl, title) in imagesandtitles:
-        for (url, secondtitle) in urlstofilm:
-            if title == secondtitle:
-                tmp = []
-                if imageurl.find("http://") != -1:
-                    tmp.append(imageurl)
-                else:
-                    tmp.append("http://kinokong.net"+imageurl)
-                tmp.append(title)
-                tmp.append(url)
-                retarr.append(tmp)
+    for (Quality, Url, Image, Title, Positive, Negative) in UrlsImagesTitles:
+
+        if not 'http' in Image:
+            tmpImage = "http://kinokong.net" + Image
+            Image = tmpImage
+
+        # Append it to retarr
+        tmpArray = []
+        tmpArray.append(Image)
+        tmpArray.append(Title)
+        tmpArray.append(Url)
+        tmpArray.append(Quality)
+        tmpArray.append(Positive.strip())
+        tmpArray.append(Negative.strip())
+        retarr.append(tmpArray)
 
     return retarr
+
 
 # Gets film informations, but after a search
 # another method because of very different regex
@@ -118,7 +125,7 @@ def getfilminformationssearch(url):
                 if imageurl.find("http://") != -1:
                     tmp.append(imageurl)
                 else:
-                    tmp.append("http://kinokong.net"+imageurl)
+                    tmp.append("http://kinokong.net" + imageurl)
                 tmp.append(title)
                 tmp.append(url)
                 retarr.append(tmp)
@@ -140,7 +147,7 @@ def getfilmurltostream(url):
 
     # Now we can filter url to stream from html response
     # Regex to filter link for single file (e.g. film)
-    p = re.compile(ur'new.Uppod.*file:"(.*)",')
+    p = re.compile(ur'new.Uppod.*file:"(.*\.[a-z0-9]{1,4})"')
     urltostream = re.findall(p, html)
 
     if urltostream:
@@ -155,18 +162,28 @@ def getfilmurltostream(url):
             response = urllib2.urlopen(textfileurl)
             html = response.read()
             # Regex to filter file number, season and link
-            p = re.compile(ur'"comment":"(.*)","file":"(.*)"')
+            p = re.compile(ur'"comment":"(.*?)","file":"(http:\/\/.*?)"')
             playlist = re.findall(p, html)
             retarr = []
             for (title, url) in playlist:
-                tmp = []
-                tmp.append(title.replace('<br>', ' '))
-                tmp.append(url)
-                retarr.append(tmp)
+                if url.find(','):
+                    urlArray = url.split(',')
+                    for i, myUrl in enumerate(urlArray):
+                        tmp = []
+                        myTitle = 'Quality ' + str(i+1) + ': ' + title.replace('<br>', ' ')
+                        tmp.append(myTitle)
+                        tmp.append(myUrl)
+                        retarr.append(tmp)
+                else:
+                    tmp = []
+                    tmp.append(title.replace('<br>', ' '))
+                    tmp.append(url)
+                    retarr.append(tmp)
 
             return retarr
         else:
             return []
+
 
 if mode is None:
     url = build_url({'mode': 'search'})
@@ -213,8 +230,8 @@ elif mode[0] == 'folder':
     filminformations = getfilminformations(categoryurl)
 
     for (element) in filminformations:
-        url = build_url({'mode': 'item', 'filmtitle': element[1], 'filmpicture': element[0], 'filmurl': element[2]})
-        li = xbmcgui.ListItem(element[1].decode('windows-1251'), iconImage=element[0])
+        url = build_url({'mode': 'item', 'filmtitle': '[COLOR orange]' + element[3] + '[/COLOR]: [COLOR green]' + element[4] + '[/COLOR] [COLOR red]' + element[5] + '[/COLOR] ' + element[1], 'filmpicture': element[0], 'filmurl': element[2]})
+        li = xbmcgui.ListItem('[COLOR orange]' + element[3] + '[/COLOR]: [COLOR green]' + element[4] + '[/COLOR] [COLOR red]' + element[5] + '[/COLOR] ' + element[1].decode('windows-1251'), iconImage=element[0])
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
     xbmcplugin.endOfDirectory(addon_handle)
     xbmc.executebuiltin('Container.SetViewMode(500)')
