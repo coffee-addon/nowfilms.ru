@@ -147,11 +147,20 @@ def getfilmurltostream(url):
 
     # Now we can filter url to stream from html response
     # Regex to filter link for single file (e.g. film)
-    p = re.compile(ur'new.Uppod.*file:"(.*\.[a-z0-9]{1,4})"')
-    urltostream = re.findall(p, html)
+    p1 = re.compile(ur'new.Uppod.*file:"(.*\.[a-z0-9]{1,4})"')
+    urltostream_single_url = re.findall(p1, html)
 
-    if urltostream:
-        return urltostream[0]
+    # Second Regex to filter multiple qualities of single film
+    # Example: http://url.mp4,http://secondurl.mp4
+    p2 = re.compile(ur'new.Uppod.*file:"(.*?),(http:.*?)"')
+    urltostream_multiple_url = re.findall(p2, html)
+
+    # If we found multi quality film, return last(it is probably the best one)
+    if urltostream_multiple_url:
+        return urltostream_multiple_url[0][len(urltostream_multiple_url)-1]
+    # If film has not multi quality return single quality
+    elif urltostream_single_url:
+        return urltostream_single_url[0]
     else:
         # First search for playlist of the multi file url
         p = re.compile(ur'pl:"(.*).txt"')

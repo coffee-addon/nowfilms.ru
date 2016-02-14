@@ -11,47 +11,65 @@ import pprint
 # Types, to check if variable is of type
 import types
 
-
-# Gets film informations
+# Gets url to stream
 #
-# Returns array with following informations:
-# Array:
-# [0] - Imageurl
-# [1] - Title
-# [2] - Url to film
-# [3] - Quality
-# [4] - Positive
-# [5] - Positive
-def getfilminformations(url):
-    # Open url
-    response = urllib.urlopen(url)
+# Returns string|array
+# If array:
+# [0] - Title of the series
+# [1] - Url to serie
+def getfilmurltostream(url):
+    # Get Url to stream
+    # First open the link to the film
+    response = urllib2.urlopen(url)
     html = response.read()
-    # First regex to filter image and title
-    # Broke into two strings because Python sucks!
-    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
-    teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
-    teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
-    p = re.compile(teststring)
-    UrlsImagesTitles = re.findall(p, html)
 
-    # Create an array and write all found elements to it
-    retarr = []
-    for (Quality, Url, Image, Title, Positive, Negative) in UrlsImagesTitles:
+    # Now we can filter url to stream from html response
+    # Regex to filter link for single file (e.g. film)
+    p1 = re.compile(ur'new.Uppod.*file:"(.*\.[a-z0-9]{1,4})"')
+    urltostream_single_url = re.findall(p1, html)
 
-        if not 'http' in Image:
-            tmpImage = "http://kinokong.net" + Image
-            Image = tmpImage
+    # Second Regex to filter multiple qualities of single film
+    # Example: http://url.mp4,http://secondurl.mp4
+    p2 = re.compile(ur'new.Uppod.*file:"(.*?),(http:.*?)"')
+    urltostream_multiple_url = re.findall(p2, html)
 
-        # Append it to retarr
-        tmpArray = []
-        tmpArray.append(Image)
-        tmpArray.append(Title)
-        tmpArray.append(Url)
-        tmpArray.append(Quality)
-        tmpArray.append(Positive.strip())
-        tmpArray.append(Negative.strip())
-        retarr.append(tmpArray)
+    # If we found multi quality film, return last(it is probably the best one)
+    if urltostream_multiple_url:
+        return urltostream_multiple_url[0][len(urltostream_multiple_url)-1]
+    # If film has not multi quality return single quality
+    elif urltostream_single_url:
+        return urltostream_single_url[0]
+    else:
+        # First search for playlist of the multi file url
+        p = re.compile(ur'pl:"(.*).txt"')
+        textfileurl = re.findall(p, html)
 
-    return retarr
+        if textfileurl:
+            textfileurl = textfileurl[0] + '.txt'
+            response = urllib2.urlopen(textfileurl)
+            html = response.read()
+            # Regex to filter file number, season and link
+            p = re.compile(ur'"comment":"(.*?)","file":"(http:\/\/.*?)"')
+            playlist = re.findall(p, html)
+            retarr = []
+            for (title, url) in playlist:
+                if url.find(','):
+                    urlArray = url.split(',')
+                    for i, myUrl in enumerate(urlArray):
+                        tmp = []
+                        myTitle = 'Quality ' + str(i+1) + ': ' + title.replace('<br>', ' ')
+                        tmp.append(myTitle)
+                        tmp.append(myUrl)
+                        retarr.append(tmp)
+                else:
+                    tmp = []
+                    tmp.append(title.replace('<br>', ' '))
+                    tmp.append(url)
+                    retarr.append(tmp)
 
-print(getfilminformations('http://kinokong.net/serial'))
+            return retarr
+        else:
+            return []
+
+#print(getfilmurltostream("http://kinokong.net/27229-krid-nasledie-rokki-2015-online.html"))
+print(getfilmurltostream("http://kinokong.net/25073-lyubovnaya-zagvozdka-2015-online.html"))
