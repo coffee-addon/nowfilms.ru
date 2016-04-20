@@ -70,9 +70,9 @@ def getfilminformations(url):
     #teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
     #teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
     #teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
-    teststring = '(?:<span class="main-sliders-popup">(.|\n)*<b>(.*)<\/b>(.|\n)*)?<span class="main-sliders-bg">'
-    teststring = teststring + '.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
-    teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
+    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*'
+    teststring = teststring + '\n.*\n.*\n.*\n.*)<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" '
+    teststring = teststring + 'alt="(.*)">(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
     p = re.compile(teststring)
     UrlsImagesTitles = re.findall(p, html)
 
