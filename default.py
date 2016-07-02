@@ -110,8 +110,10 @@ def getfilminformations(url):
 # [2] - Url to film
 def getfilminformationssearch(url):
     # Open url
-    response = urllib2.urlopen(url)
-    html = response.read()
+    req = urllib2.Request(url)
+    req.add_header('User-agent', 'Mozilla 5.10')
+    res = urllib2.urlopen(req)
+    html = res.read()
     # First regex to filter image and title
     # p = re.compile(ur'<span class="new_movie4 oops" style="background: url\((.*)\)\ no-repeat.*alt="(.*)"')
     p = re.compile(ur'<span class="new_movie4.*".*<img src="(.*)" alt="(.*)"')
@@ -147,8 +149,10 @@ def getfilminformationssearch(url):
 def getfilmurltostream(url):
     # Get Url to stream
     # First open the link to the film
-    response = urllib2.urlopen(url)
-    html = response.read()
+    req = urllib2.Request(url)
+    req.add_header('User-agent', 'Mozilla 5.10')
+    res = urllib2.urlopen(req)
+    html = res.read()
 
     # Now we can filter url to stream from html response
     # Regex to filter link for single file (e.g. film)
@@ -173,8 +177,10 @@ def getfilmurltostream(url):
 
         if textfileurl:
             textfileurl = textfileurl[0] + '.txt'
-            response = urllib2.urlopen(textfileurl)
-            html = response.read()
+            req = urllib2.Request(textfileurl)
+            req.add_header('User-agent', 'Mozilla 5.10')
+            res = urllib2.urlopen(req)
+            html = res.read()
             # Regex to filter file number, season and link
             p = re.compile(ur'"comment":"(.*?)","file":"(http:\/\/.*?)"')
             playlist = re.findall(p, html)
