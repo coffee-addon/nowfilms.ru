@@ -63,16 +63,18 @@ mode = args.get('mode', None)
 # [5] - Negative
 def getfilminformations(url):
     # Open url
-    response = urllib.urlopen(url)
-    html = response.read()
+    req = urllib2.Request(url)
+    req.add_header('User-agent', 'Mozilla 5.10')
+    res = urllib2.urlopen(req)
+    html = res.read()
     # First regex to filter image and title
     # Broke into two strings because Python sucks!
-    #teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
-    #teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
-    #teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
-    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*'
-    teststring = teststring + '\n.*\n.*\n.*\n.*)<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" '
-    teststring = teststring + 'alt="(.*)">(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
+    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
+    teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
+    teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
+    #teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*'
+    #teststring = teststring + '\n.*\n.*\n.*\n.*)<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" '
+    #teststring = teststring + 'alt="(.*)">(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
     p = re.compile(teststring)
     UrlsImagesTitles = re.findall(p, html)
 
