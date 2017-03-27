@@ -55,10 +55,10 @@ mode = args.get('mode', None)
 #
 # Returns array with following informations:
 # Array:
-# [0] - Imageurl
-# [1] - Title
-# [2] - Url to film
-# [3] - Quality
+# [0] - Quality
+# [1] - Url to film
+# [2] - Url to image
+# [3] - Title
 # [4] - Positive
 # [5] - Negative
 def getfilminformations(url):
@@ -69,12 +69,15 @@ def getfilminformations(url):
     html = res.read()
     # First regex to filter image and title
     # Broke into two strings because Python sucks!
-    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
+    #teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*)?'
+    #teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
+    #teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
+
+    teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*)?'
     teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" alt="(.*)">'
-    teststring = teststring + '(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
-    #teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*'
-    #teststring = teststring + '\n.*\n.*\n.*\n.*)<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*<img src="(.*)" '
-    #teststring = teststring + 'alt="(.*)">(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*).*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n(.*))?'
+    teststring = teststring + '(?:(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*|.*\n.*\n.*\n.*\n.*\n.*\n.*)'
+    teststring = teststring + '?<svg viewBox.*\n.*\n.*\n\s+([0-9]+)\s.*\n.*\n.*\n.*\n.*\n.*\n.*\n\s+([0-9]+)\s)?'
+
     p = re.compile(teststring)
     UrlsImagesTitles = re.findall(p, html)
 
