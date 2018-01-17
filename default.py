@@ -230,11 +230,11 @@ if mode is None:
     li = xbmcgui.ListItem('Shows', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'novinki', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'films/novinki-kinos', 'page': 1})
     li = xbmcgui.ListItem('New', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'multfilm', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'multfilmi', 'page': 1})
     li = xbmcgui.ListItem('Cartoons', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
