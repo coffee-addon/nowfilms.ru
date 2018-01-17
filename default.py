@@ -79,7 +79,7 @@ def getfilminformations(url):
     #teststring = teststring + '?<svg viewBox.*\n.*\n.*\n\s+([0-9]+)\s.*\n.*\n.*\n.*\n.*\n.*\n.*\n\s+([0-9]+)\s)?'
 
     teststring = '(?:<span class="main-sliders-popup">.*\n.*\n.*\n.*\n.*<b>(.*)<\/b>.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*)?'
-    teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*\n.*<img src="(.*)" alt="(.*?)"'
+    teststring = teststring + '<span class="main-sliders-bg">.*\n.*<a href="(.*\.html)".*\n.*\n.*\n.*<img src="(.*?)" id=".*" alt="(.*?)"'
     teststring = teststring + '(?:(?:.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*|.*\n.*\n.*\n.*\n.*\n.*\n.*)'
     teststring = teststring + '?<svg viewBox.*\n.*\n.*\n\s+([0-9]+)\s.*\n.*\n.*\n.*\n.*\n.*\n.*\n\s+([0-9]+)\s)?'
 
