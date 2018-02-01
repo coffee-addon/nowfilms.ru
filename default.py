@@ -64,7 +64,7 @@ mode = args.get('mode', None)
 def getfilminformations(url):
     # Open url
     req = urllib2.Request(url)
-    req.add_header('User-agent', 'Mozilla 5.10')
+    req.add_header('User-agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
     res = urllib2.urlopen(req)
     html = res.read()
     # First regex to filter image and title
@@ -120,7 +120,7 @@ def getfilminformations(url):
 def getfilminformationssearch(url):
     # Open url
     req = urllib2.Request(url)
-    req.add_header('User-agent', 'Mozilla 5.10')
+    req.add_header('User-agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
     res = urllib2.urlopen(req)
     html = res.read()
     # First regex to filter image and title
@@ -159,7 +159,7 @@ def getfilmurltostream(url):
     # Get Url to stream
     # First open the link to the film
     req = urllib2.Request(url)
-    req.add_header('User-agent', 'Mozilla 5.10')
+    req.add_header('User-agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
     res = urllib2.urlopen(req)
     html = res.read()
 
@@ -187,7 +187,7 @@ def getfilmurltostream(url):
         if textfileurl:
             textfileurl = textfileurl[0] + '.txt'
             req = urllib2.Request(textfileurl)
-            req.add_header('User-agent', 'Mozilla 5.10')
+            req.add_header('User-agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
             res = urllib2.urlopen(req)
             html = res.read()
             # Regex to filter file number, season and link
