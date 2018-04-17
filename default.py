@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# This is a plugin for the site 'nowfilms.ru / kinokong.net'
+# This is a plugin for the site 'nowfilms.ru / kinokong.cc'
 # It was written by coffee
 #
 # Simple and performant plugin to look films etc... It was tested on Raspberry Pi 2 + Openelec + Kodi 14.1
@@ -93,7 +93,7 @@ def getfilminformations(url):
     for (Quality, Url, Image, Title, Positive, Negative) in UrlsImagesTitles:
 
         if not 'http' in Image:
-            tmpImage = "http://kinokong.net" + Image
+            tmpImage = "http://kinokong.cc" + Image
             Image = tmpImage
 
         # Append it to retarr
@@ -143,7 +143,7 @@ def getfilminformationssearch(url):
                 if imageurl.find("http://") != -1:
                     tmp.append(imageurl)
                 else:
-                    tmp.append("http://kinokong.net" + imageurl)
+                    tmp.append("http://kinokong.cc" + imageurl)
                 tmp.append(title)
                 tmp.append(url)
                 retarr.append(tmp)
@@ -254,7 +254,7 @@ if mode is None:
 elif mode[0] == 'folder':
     category = args['foldername'][0]
     page = args['page'][0]
-    categoryurl = 'http://kinokong.net/' + category + '/page/' + str(page) + '/'
+    categoryurl = 'http://kinokong.cc/' + category + '/page/' + str(page) + '/'
 
     # Next page
     nextpage = int(page) + 1
@@ -299,7 +299,7 @@ elif mode[0] == 'search':
         searchtext = keyboard.getText()
 
     searchtext = searchtext.decode('utf-8').encode('windows-1251')
-    url = 'http://kinokong.net/?do=search&subaction=search&story=' + searchtext + '&x=0&y=0'
+    url = 'http://kinokong.cc/?do=search&subaction=search&story=' + searchtext + '&x=0&y=0'
     filminformations = getfilminformationssearch(url)
 
     for (element) in filminformations:
