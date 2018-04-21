@@ -229,7 +229,7 @@ if mode is None:
     li = xbmcgui.ListItem('Films', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'serial', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'series', 'page': 1})
     li = xbmcgui.ListItem('Serials', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
