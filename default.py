@@ -225,7 +225,7 @@ if mode is None:
     li = xbmcgui.ListItem('Search', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'films', 'page': 1})
+     url = build_url({'mode': 'folder', 'foldername': 'film', 'page': 1})
     li = xbmcgui.ListItem('Films', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
@@ -233,19 +233,19 @@ if mode is None:
     li = xbmcgui.ListItem('Serials', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'dokumentalnyy', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'documentary', 'page': 1})
     li = xbmcgui.ListItem('Shows', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'films/novinki-kinos', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'film/novinki-kinos', 'page': 1})
     li = xbmcgui.ListItem('New', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'multfilmi', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'cartoons', 'page': 1})
     li = xbmcgui.ListItem('Cartoons', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'folder', 'foldername': 'anime', 'page': 1})
+    url = build_url({'mode': 'folder', 'foldername': 'animes', 'page': 1})
     li = xbmcgui.ListItem('Anime', iconImage='DefaultFolder.png')
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
